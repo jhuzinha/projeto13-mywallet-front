@@ -1,29 +1,45 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { useContext } from "react";
+import Token from "../Contexts/tokenContext.js";
+import axios from "axios";
 
 
 export default function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    
+    const navigate = useNavigate();
+    const { setToken } = useContext(Token);
+
     function loginUser(event) {
         event.preventDefault();
+        const body = {
+            email,
+            password
+        }
+        const promise = axios.post("http://localhost:5000/login", body);
+        promise.then((res) => {
+            setToken(res.data.token);
+            navigate("/main")})
+        
+        promise.catch(
+            alert("Email ou senha incorretos")
+        );
     }
-    
-    
+
     return (
         <>
             <Container>
                 <div>
                     <h1> MyWallet </h1>
                     <Forms onSubmit={loginUser}>
-                        <input placeholder="E-mail" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required/>
-                        <input placeholder="Senha" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required/>
+                        <input placeholder="E-mail" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+                        <input placeholder="Senha" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
                         <button type="submit"> Entrar </button>
                     </Forms>
-                    <Link to={"/register"} style={{ textDecoration: 'none' }}> 
-                       <p> Primeira vez? Cadastre-se! </p>  
+                    <Link to={"/register"} style={{ textDecoration: 'none' }}>
+                        <p> Primeira vez? Cadastre-se! </p>
                     </Link>
                 </div>
             </Container>
@@ -61,7 +77,7 @@ const Container = styled.div`
     }
 `
 
-const Forms = styled.form `
+const Forms = styled.form`
     display: flex;
     flex-direction: column;
     width: 90%;

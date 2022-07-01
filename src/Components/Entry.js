@@ -7,6 +7,7 @@ export default function Entry(){
 
     function addNewValue(event){
         event.preventDefault();
+        
     }
 
 

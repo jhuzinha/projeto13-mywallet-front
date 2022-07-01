@@ -1,16 +1,31 @@
 import styled from "styled-components";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
+import axios from "axios";
 
 export default function Register(){
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
-
+    const navigate = useNavigate();
 
     function handleSubmit(event) {
         event.preventDefault();
+        const newUser = {
+            name, 
+            email,
+            password,
+            confirmPassword
+        }
+
+        const request = axios.post("http://localhost:5000/register", newUser)
+        request.then((res) =>{ 
+            alert("Usuário criado com sucesso")
+            navigate("/")
+        }
+        )
+        request.catch((res)=> { alert(res.response.data.message)})
     }
     
     
