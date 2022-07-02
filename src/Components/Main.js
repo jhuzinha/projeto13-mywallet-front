@@ -2,40 +2,60 @@ import styled from "styled-components"
 import { IoExitOutline } from 'react-icons/io5';
 import { AiOutlinePlusCircle } from 'react-icons/ai';
 import { AiOutlineMinusCircle } from 'react-icons/ai';
+import { Link } from "react-router-dom";
 
-export default function Main(){
-    return ( 
+export default function Main() {
+    return (
         <>
-        <Container>
-            <header> 
-                <h1> Olá, fulano </h1>
-                <IoExitOutline/>
-            </header>
+            <Container>
+                <Header />
 
-            <Movements>
+                <Movements>
+                    
 
-            </Movements>
+                </Movements>
 
-            <Buttons>
-                <div>
-                    <AiOutlinePlusCircle/>
-                    <p> Nova <br/> entrada </p>
-            
-                </div>
-                <div>
-                    <AiOutlineMinusCircle/>
-                    <p> Nova <br/> saída </p>
-                </div>
+                <ButtonsCreateMovements />
 
-            </Buttons>
-
-        </Container>
+            </Container>
         </>
     )
 }
 
+function Header() {
+    return (
+        <header>
+            <h1> Olá, fulano </h1>
+            <IoExitOutline />
+        </header>
+    )
+}
 
-const Container = styled.section `
+
+function ButtonsCreateMovements() {
+    return (
+        <Buttons>
+            <Link to={"/entry"} style={{ textDecoration: 'none', width: '90%', marginRight: '10px' }}>
+                <Button>
+                    <AiOutlinePlusCircle />
+                    <p> Nova <br /> entrada </p>
+                </Button>
+            </Link>
+            <Link to={"/output"} style={{ textDecoration: 'none', width: '90%' }}>
+                <Button>
+                    <AiOutlineMinusCircle />
+                    <p> Nova <br /> saída </p>
+                </Button>
+            </Link>
+        </Buttons>
+    )
+}
+
+
+
+
+
+const Container = styled.section`
     width: 100%;
     height: 100%;
     padding: 25px;
@@ -51,7 +71,7 @@ const Container = styled.section `
 
 `
 
-const Movements = styled.div `
+const Movements = styled.div`
     background-color: var(--bg_input);
     height: 446px;
     border-radius: 5px;
@@ -60,26 +80,25 @@ const Movements = styled.div `
 
 `
 
-const Buttons = styled.div `
+const Buttons = styled.div`
     display: flex;
-    justify-content: space-around;
-    div {
-        width: 48.95%;
-        background-color: var(--bg_button);
-        color: var(--color_word);
-        border-radius: 5px;
-        font-weight: 700;
-        font-size: 17px;
-        height: 114px;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        padding: 10px;
-         
-        div {
-            font-size: 17px;
-        }
-    }
+    justify-content: space-between;
+    width: 100%;
+`
 
+const Button = styled.div`
+    min-width: 130px;
+    width: 100%;
+    background-color: var(--bg_button);
+    color: var(--color_word);
+    border-radius: 5px;
+    font-weight: 700;
+    font-size: 17px;
+    height: 114px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 10px;
+    
 
 `

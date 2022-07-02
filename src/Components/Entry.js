@@ -1,13 +1,35 @@
 import { useState } from "react";
 import styled from "styled-components";
+import { useContext } from "react";
+import Token from "../Contexts/tokenContext.js";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+
 
 export default function Entry(){
     const [value, setValue] = useState("")
     const [description, setDescription] = useState("")
+    const { token } = useContext(Token);
+    const navigate = useNavigate();
 
     function addNewValue(event){
         event.preventDefault();
-        
+        const config = {
+            headers: {
+                "Authorization": `Bearer ${token}`
+            }
+        }
+
+        const body = {
+            value,
+            description
+        }
+
+        const promise = axios.post("http://localhost:5000/entry", config , body);
+        promise.then(() => {
+            navigate("/main")}).catch(() =>
+            alert("Você precisa estar logado")
+        );
     }
 
 

@@ -21,9 +21,7 @@ export default function Login() {
         const promise = axios.post("http://localhost:5000/login", body);
         promise.then((res) => {
             setToken(res.data.token);
-            navigate("/main")})
-        
-        promise.catch(
+            navigate("/main")}).catch(() =>
             alert("Email ou senha incorretos")
         );
     }
