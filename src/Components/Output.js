@@ -13,18 +13,19 @@ export default function Output() {
 
     function minusNewValue(event) {
         event.preventDefault();
+        
+        
         const config = {
             headers: {
                 "Authorization": `Bearer ${token}`
             }
         }
-        
         const body = {
             value,
             description
         }
         
-        const promise = axios.post("http://localhost:5000/output", config ,body);
+        const promise = axios.post("http://localhost:5000/output", body, config );
         promise.then(() => {
             navigate("/main")}).catch(() =>
             alert("Você precisa estar logado")

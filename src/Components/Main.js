@@ -3,15 +3,61 @@ import { IoExitOutline } from 'react-icons/io5';
 import { AiOutlinePlusCircle } from 'react-icons/ai';
 import { AiOutlineMinusCircle } from 'react-icons/ai';
 import { Link } from "react-router-dom";
+import axios from "axios";
+import { useContext, useEffect, useState } from "react";
+import Token from "../Contexts/tokenContext.js";
 
 export default function Main() {
+    const [transitions, setTransitions] = useState([]);
+    const [total, setTotal] = useState("");
+    const { token } = useContext(Token);
+
+    useEffect(() => {
+        const config = {
+            headers: {
+                "Authorization": `Bearer ${token}`
+            }
+        }
+
+        console.log(config)
+        const promise = axios.get("http://localhost:5000/main", config );
+        promise.then((res) => { setTransitions(res.data.transitionUser); setTotal(res.data.total); console.log(res.data)}
+        ).catch(() =>
+            alert("Você precisa estar logado")
+        );
+    }, [])
+
     return (
         <>
             <Container>
                 <Header />
 
                 <Movements>
-                    
+                    {
+                        transitions.map( (transitions) => { return transitions.status === 'plus'? 
+                        <Transition>
+                            <div>
+                                <spam>{transitions.day + "  " }</spam> {transitions.description}
+                            </div>
+                            <Type color="green">
+                                { transitions.value }
+                            </Type>
+                            
+                        </Transition>
+            
+                        : 
+                            
+                        <Transition>
+                            <div>
+                                <spam>{transitions.day + "  "}</spam> {transitions.description}
+                            </div>
+                            <Type color="red">
+                                { transitions.value }
+                            </Type>
+                            
+                        </Transition>
+                         })
+                    }
 
                 </Movements>
 
@@ -73,10 +119,11 @@ const Container = styled.section`
 
 const Movements = styled.div`
     background-color: var(--bg_input);
-    height: 446px;
+    height: 500px;
     border-radius: 5px;
     margin-top: 25px;
     margin-bottom: 25px;
+    overflow-y: scroll;
 
 `
 
@@ -100,5 +147,22 @@ const Button = styled.div`
     justify-content: space-between;
     padding: 10px;
     
+
+`
+
+const Transition = styled.ul `
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    div {
+        spam {
+            color: gray;
+        }    
+    }
+
+`
+
+const Type = styled.li `
+    color: ${(props) => props.color};
 
 `

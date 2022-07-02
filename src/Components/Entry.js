@@ -19,13 +19,13 @@ export default function Entry(){
                 "Authorization": `Bearer ${token}`
             }
         }
-
+        console.log({ config})
         const body = {
             value,
             description
         }
 
-        const promise = axios.post("http://localhost:5000/entry", config , body);
+        const promise = axios.post("http://localhost:5000/entry", body, config);
         promise.then(() => {
             navigate("/main")}).catch(() =>
             alert("Você precisa estar logado")
