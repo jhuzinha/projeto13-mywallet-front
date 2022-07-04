@@ -22,14 +22,14 @@ export default function Register(){
             confirmPassword
         }
 
-        const request = axios.post("http://localhost:5000/register", newUser)
+        const request = axios.post("https://projeto13mywallet-jhuzinha.herokuapp.com/register", newUser)
         request.then(() =>{ 
             setLoading(false)
             alert("Usuário criado com sucesso")
             navigate("/")
         }
         )
-        request.catch((res)=> { alert(res.response.data.message)})
+        request.catch((res)=> { alert(res.response.data.message); setLoading(false)})
     }
     
     

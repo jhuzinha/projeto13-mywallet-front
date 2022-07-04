@@ -27,11 +27,11 @@ export default function Output() {
             description
         }
         
-        const promise = axios.post("http://localhost:5000/output", body, config );
+        const promise = axios.post("https://projeto13mywallet-jhuzinha.herokuapp.com/output", body, config );
         promise.then(() => {
             setLoading(false);
-            navigate("/main")}).catch(() =>
-            alert("Você precisa estar logado")
+            navigate("/main")}).catch(() => {
+            alert("Você precisa estar logado"); setLoading(false)}
         );
     }
 

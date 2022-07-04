@@ -19,10 +19,10 @@ export default function Main() {
                 "Authorization": `Bearer ${token.token}`
             }
         }
-        const promise = axios.get("http://localhost:5000/main", config);
+        const promise = axios.get("https://projeto13mywallet-jhuzinha.herokuapp.com/main", config);
         promise.then((res) => { setTransitions(res.data.transitionUser); setTotal(res.data.total.toFixed(2).replace(",", ".")); }
-        ).catch(() =>
-            alert("Você precisa estar logado")
+        ).catch(() => {
+            alert("Você precisa estar logado") }
         );
     }, [])
 

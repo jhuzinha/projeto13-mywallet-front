@@ -22,12 +22,12 @@ export default function Login() {
             email,
             password
         }
-        const promise = axios.post("http://localhost:5000/login", body);
+        const promise = axios.post("https://projeto13mywallet-jhuzinha.herokuapp.com/login", body);
         promise.then((res) => {
             setLoading(false)
             setToken(res.data);
-            navigate("/main")}).catch(() =>
-            alert("Email ou senha incorretos")
+            navigate("/main")}).catch(() => {setLoading(false)
+            alert("Email ou senha incorretos")} 
         );
     }
 
