@@ -58,7 +58,7 @@ function Header({ token , setToken }) {
     return (
         <header>
             <h1> Olá, {token.name} </h1>
-            <Link onClick={setToken('')} to={"/"} style={{ textDecoration: 'none', color: 'white' }}><IoExitOutline /></Link>
+            <Link onClick={() => setToken('')} to={"/"} style={{ textDecoration: 'none', color: 'white' }}><IoExitOutline /></Link>
         </header>
     )
 }
