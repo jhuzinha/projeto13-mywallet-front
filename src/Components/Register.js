@@ -29,7 +29,7 @@ export default function Register(){
             navigate("/")
         }
         )
-        request.catch((res)=> { alert(res.response.data.message); setLoading(false)})
+        request.catch((res)=> { alert("Sua senha deve ter pelo menos 8 caracteres"); setLoading(false)})
     }
     
     
