@@ -11,7 +11,7 @@ import Transitions from "./Movements.js";
 export default function Main() {
     const [transitions, setTransitions] = useState([]);
     const [total, setTotal] = useState("");
-    const { token } = useContext(Token);
+    const { token, setToken } = useContext(Token);
 
     useEffect(() => {
         const config = {
@@ -29,7 +29,7 @@ export default function Main() {
     return (
         <>
             <Container>
-                <Header token={token} />
+                <Header token={token} setToken={setToken} />
                 <Movements>
                     {transitions.length === 0 ?
                         <NoneRegister>
@@ -54,11 +54,11 @@ export default function Main() {
     )
 }
 
-function Header({ token }) {
+function Header({ token , setToken }) {
     return (
         <header>
             <h1> Olá, {token.name} </h1>
-            <Link to={"/"} style={{ textDecoration: 'none', color: 'white' }}><IoExitOutline /></Link>
+            <Link onClick={setToken('')} to={"/"} style={{ textDecoration: 'none', color: 'white' }}><IoExitOutline /></Link>
         </header>
     )
 }
