@@ -32,7 +32,7 @@ export default function Entry(){
         promise.then(() => {
             setLoading(false)
             navigate("/main")}).catch(() => {
-            alert("Você precisa estar logado"), setLoading(false)}
+            alert("Você precisa estar logado"); setLoading(false)}
         );
     }
 
