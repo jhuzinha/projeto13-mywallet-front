@@ -22,7 +22,6 @@ export default function Entry(){
                 "Authorization": `Bearer ${token.token}`
             }
         }
-        console.log(token)
         const body = {
             value,
             description
