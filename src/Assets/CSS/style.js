@@ -24,6 +24,7 @@ body {
     background-color: var(--bg_color);
     width: 100%;
     height: 100%;
+    overflow: hidden;
 }
 
 input { 

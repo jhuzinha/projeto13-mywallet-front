@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import { useContext, useEffect, useState } from "react";
 import Token from "../Contexts/tokenContext.js";
+import Transitions from "./Movements.js";
 
 export default function Main() {
     const [transitions, setTransitions] = useState([]);
@@ -15,13 +16,11 @@ export default function Main() {
     useEffect(() => {
         const config = {
             headers: {
-                "Authorization": `Bearer ${token}`
+                "Authorization": `Bearer ${token.token}`
             }
         }
-
-        console.log(config)
-        const promise = axios.get("http://localhost:5000/main", config );
-        promise.then((res) => { setTransitions(res.data.transitionUser); setTotal(res.data.total); console.log(res.data)}
+        const promise = axios.get("http://localhost:5000/main", config);
+        promise.then((res) => { setTransitions(res.data.transitionUser); setTotal(res.data.total.toFixed(2).replace(",", ".")); }
         ).catch(() =>
             alert("Você precisa estar logado")
         );
@@ -30,49 +29,36 @@ export default function Main() {
     return (
         <>
             <Container>
-                <Header />
-
+                <Header token={token} />
                 <Movements>
-                    {
-                        transitions.map( (transitions) => { return transitions.status === 'plus'? 
-                        <Transition>
-                            <div>
-                                <spam>{transitions.day + "  " }</spam> {transitions.description}
-                            </div>
-                            <Type color="green">
-                                { transitions.value }
-                            </Type>
-                            
-                        </Transition>
-            
-                        : 
-                            
-                        <Transition>
-                            <div>
-                                <spam>{transitions.day + "  "}</spam> {transitions.description}
-                            </div>
-                            <Type color="red">
-                                { transitions.value }
-                            </Type>
-                            
-                        </Transition>
-                         })
+                    {transitions.length === 0 ?
+                        <NoneRegister>
+                            <p>Não há registros de entrada ou saída</p>
+                        </NoneRegister>
+                        :
+                        <Transitions transitions={transitions} />
                     }
-
                 </Movements>
-
+                {transitions.length === 0 ?
+                    <Total color="white">
+                    </Total>
+                    :
+                    <Total color={Number(total) <= 0 ? "red" : "green"}>
+                        <h1> SALDO </h1>
+                        <p> {Number(total).toFixed(2).toString().replace(".", ",")} </p>
+                    </Total>
+                }
                 <ButtonsCreateMovements />
-
             </Container>
         </>
     )
 }
 
-function Header() {
+function Header({ token }) {
     return (
         <header>
-            <h1> Olá, fulano </h1>
-            <IoExitOutline />
+            <h1> Olá, {token.name} </h1>
+            <Link to={"/"} style={{ textDecoration: 'none', color: 'white' }}><IoExitOutline /></Link>
         </header>
     )
 }
@@ -105,6 +91,7 @@ const Container = styled.section`
     width: 100%;
     height: 100%;
     padding: 25px;
+    overflow: none;
 
     header {
         display: flex;
@@ -114,17 +101,6 @@ const Container = styled.section`
         font-weight: 700;
     
     }
-
-`
-
-const Movements = styled.div`
-    background-color: var(--bg_input);
-    height: 500px;
-    border-radius: 5px;
-    margin-top: 25px;
-    margin-bottom: 25px;
-    overflow-y: scroll;
-
 `
 
 const Buttons = styled.div`
@@ -149,20 +125,39 @@ const Button = styled.div`
     
 
 `
-
-const Transition = styled.ul `
-    display: flex;
-    justify-content: space-between;
-    padding: 10px;
-    div {
-        spam {
-            color: gray;
-        }    
-    }
+const Movements = styled.div`
+    background-color: var(--bg_input);
+    height: 500px;
+    border-radius: 5px 5px 0 0;
+    margin-top: 25px;
+    overflow-y: scroll;
 
 `
 
-const Type = styled.li `
-    color: ${(props) => props.color};
+const NoneRegister = styled.div`
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    color: var(--date_color);
+    width: 100%;
+    height: 100%;
+    padding: 20px;
+`
 
+const Total = styled.div`
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    width: 100%;
+    font-size: 17px;
+    background-color:  var(--bg_input);
+    border-radius:0 0 5px 5px;
+    margin-bottom:  15px;
+    h1 {
+        font-weight: bold;
+    }
+    p{
+        color: ${(props) => props.color};
+    }
 `

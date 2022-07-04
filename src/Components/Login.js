@@ -4,22 +4,27 @@ import styled from "styled-components";
 import { useContext } from "react";
 import Token from "../Contexts/tokenContext.js";
 import axios from "axios";
+import { Bars } from  'react-loader-spinner';
+
 
 
 export default function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [loading, setLoading] = useState(false)
     const navigate = useNavigate();
     const { setToken } = useContext(Token);
 
     function loginUser(event) {
         event.preventDefault();
+        setLoading(true)
         const body = {
             email,
             password
         }
         const promise = axios.post("http://localhost:5000/login", body);
         promise.then((res) => {
+            setLoading(false)
             setToken(res.data);
             navigate("/main")}).catch(() =>
             alert("Email ou senha incorretos")
@@ -34,7 +39,7 @@ export default function Login() {
                     <Forms onSubmit={loginUser}>
                         <input placeholder="E-mail" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
                         <input placeholder="Senha" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
-                        <button type="submit"> Entrar </button>
+                        {!loading? <button type="submit"> Entrar </button> : <button> <Bars heigth="100" width="100" color="black" ariaLabel="loading-indicator" /> </button> }
                     </Forms>
                     <Link to={"/register"} style={{ textDecoration: 'none' }}>
                         <p> Primeira vez? Cadastre-se! </p>

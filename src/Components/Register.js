@@ -2,16 +2,19 @@ import styled from "styled-components";
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import axios from "axios";
+import { Bars } from  'react-loader-spinner';
 
 export default function Register(){
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
+    const [loading, setLoading] = useState(false)
     const navigate = useNavigate();
 
     function handleSubmit(event) {
         event.preventDefault();
+        setLoading(true)
         const newUser = {
             name, 
             email,
@@ -20,7 +23,8 @@ export default function Register(){
         }
 
         const request = axios.post("http://localhost:5000/register", newUser)
-        request.then((res) =>{ 
+        request.then(() =>{ 
+            setLoading(false)
             alert("Usuário criado com sucesso")
             navigate("/")
         }
@@ -39,7 +43,7 @@ export default function Register(){
                         <input placeholder="E-mail" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required/>
                         <input placeholder="Senha" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required/>
                         <input placeholder="Confirme a senha" type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required/>
-                        <button type="submit"> Cadastrar </button>
+                        {!loading? <button type="submit"> Cadastrar </button> :  <button> <Bars heigth="100" width="100" color="black" ariaLabel="loading-indicator" /> </button> } 
                     </Forms>
                     <Link to={"/"} style={{ textDecoration: 'none' }}> 
                        <p> Já tem uma conta? Entre agora! </p>  
